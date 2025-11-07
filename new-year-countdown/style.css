@@ -1,0 +1,706 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('1.jpg') center/cover no-repeat fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* 背景遮罩层，增强文字可读性 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.countdown-container {
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 2;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 70%),
+        linear-gradient(135deg, rgba(198, 40, 40, 0.2), rgba(255, 193, 7, 0.2));
+    backdrop-filter: blur(5px);
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 215, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    max-width: 90%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    animation: containerPulse 4s ease-in-out infinite;
+}
+
+/* 容器装饰边框 */
+.countdown-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #ffd700, #ff6b6b) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderGlow 4s ease-in-out infinite;
+}
+
+@keyframes containerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.title {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 
+        2px 2px 4px rgba(0,0,0,0.3),
+        0 0 20px rgba(255, 215, 0, 0.6);
+    animation: pulse 2s infinite;
+    background: linear-gradient(45deg, #ff6b6b, #ffd700, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.countdown {
+    margin: 2rem 0;
+}
+
+.time-section {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.time-card {
+    background: 
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 85%),
+        linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 107, 107, 0.08));
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    min-width: 120px;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.2),
+        0 0 15px rgba(255, 215, 0, 0.15),
+        inset 0 0 15px rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.time-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.time-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.time-card:hover::before {
+    left: 100%;
+}
+
+.time-value {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-shadow: 
+        2px 2px 4px rgba(0,0,0,0.3),
+        0 0 10px rgba(255, 215, 0, 0.5);
+    animation: bounce 1s ease-in-out;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.time-label {
+    font-size: 1rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.message {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    opacity: 0.9;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+.blessings {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    animation: blessingChange 6s ease-in-out infinite;
+    font-style: italic;
+}
+
+@keyframes blessingChange {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    animation: firework 2s ease-out infinite;
+}
+
+.firework:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.firework:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation-delay: 0.5s;
+}
+
+.firework:nth-child(3) {
+    top: 80%;
+    left: 40%;
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes firework {
+    0% {
+        transform: translate(var(--x, 0), var(--y, 0));
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x-end, 100px), var(--y-end, 100px));
+        opacity: 0;
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* 福字装饰 */
+.fu-character {
+    position: absolute;
+    font-size: 4rem;
+    color: #ffd700;
+    opacity: 0.4;
+    z-index: 1;
+    user-select: none;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: fuRotate 8s ease-in-out infinite;
+}
+
+.fu-top-left {
+    top: 20px;
+    left: 20px;
+    transform: rotate(-15deg);
+    animation-delay: 0s;
+}
+
+.fu-top-right {
+    top: 20px;
+    right: 20px;
+    transform: rotate(15deg);
+    animation-delay: 2s;
+}
+
+.fu-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    transform: rotate(15deg);
+    animation-delay: 4s;
+}
+
+.fu-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    transform: rotate(-15deg);
+    animation-delay: 6s;
+}
+
+@keyframes fuRotate {
+    0%, 100% { transform: rotate(-15deg) scale(1); }
+    25% { transform: rotate(-10deg) scale(1.1); }
+    50% { transform: rotate(-15deg) scale(1); }
+    75% { transform: rotate(-20deg) scale(1.1); }
+}
+
+/* 春联装饰 */
+.spring-couplet {
+    position: absolute;
+    background: linear-gradient(45deg, #c62828, #d32f2f);
+    color: #ffd700;
+    padding: 15px 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    border: 2px solid #ffd700;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    user-select: none;
+}
+
+.spring-left {
+    left: 5%;
+    top: 30%;
+    animation: coupletFloat 6s ease-in-out infinite;
+}
+
+.spring-right {
+    right: 5%;
+    top: 30%;
+    animation: coupletFloat 6s ease-in-out infinite reverse;
+}
+
+@keyframes coupletFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 红包雨效果 */
+.red-envelope {
+    position: absolute;
+    background: linear-gradient(45deg, #e53935, #f44336);
+    color: #ffd700;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: envelopeFall linear infinite;
+    z-index: 2;
+    user-select: none;
+}
+
+@keyframes envelopeFall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 节日装饰 - 灯笼 */
+.lantern {
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    border-radius: 30px 30px 15px 15px;
+    animation: lanternSwing 3s ease-in-out infinite;
+    z-index: 5;
+}
+
+.lantern::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 15px;
+    background: #ffd700;
+    border-radius: 10px 10px 0 0;
+}
+
+.lantern::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+}
+
+.lantern-left {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.lantern-right {
+    top: 10%;
+    right: 10%;
+    animation-delay: 1.5s;
+}
+
+@keyframes lanternSwing {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+/* 雪花效果 */
+.snowflake {
+    position: absolute;
+    color: #ffffff;
+    font-size: 20px;
+    animation: snowFall linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes snowFall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 音乐控制按钮样式 */
+.music-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.music-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.music-btn:active {
+    transform: scale(0.95);
+}
+
+/* 移除自动播放提示样式 */
+
+/* 生肖轮盘样式 */
+.zodiac-wheel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    animation: zodiacRotate 30s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.zodiac-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transform-origin: center 150px;
+    animation: zodiacFloat 4s ease-in-out infinite;
+}
+
+.zodiac-icon:nth-child(1) { transform: rotate(0deg) translateY(-150px) rotate(0deg); }
+.zodiac-icon:nth-child(2) { transform: rotate(30deg) translateY(-150px) rotate(-30deg); }
+.zodiac-icon:nth-child(3) { transform: rotate(60deg) translateY(-150px) rotate(-60deg); }
+.zodiac-icon:nth-child(4) { transform: rotate(90deg) translateY(-150px) rotate(-90deg); }
+.zodiac-icon:nth-child(5) { transform: rotate(120deg) translateY(-150px) rotate(-120deg); }
+.zodiac-icon:nth-child(6) { transform: rotate(150deg) translateY(-150px) rotate(-150deg); }
+.zodiac-icon:nth-child(7) { transform: rotate(180deg) translateY(-150px) rotate(-180deg); }
+.zodiac-icon:nth-child(8) { transform: rotate(210deg) translateY(-150px) rotate(-210deg); }
+.zodiac-icon:nth-child(9) { transform: rotate(240deg) translateY(-150px) rotate(-240deg); }
+.zodiac-icon:nth-child(10) { transform: rotate(270deg) translateY(-150px) rotate(-270deg); }
+.zodiac-icon:nth-child(11) { transform: rotate(300deg) translateY(-150px) rotate(-300deg); }
+.zodiac-icon:nth-child(12) { transform: rotate(330deg) translateY(-150px) rotate(-330deg); }
+
+@keyframes zodiacRotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes zodiacFloat {
+    0%, 100% { transform: rotate(var(--rotation)) translateY(-150px) rotate(calc(var(--rotation) * -1)); }
+    50% { transform: rotate(var(--rotation)) translateY(-160px) rotate(calc(var(--rotation) * -1)); }
+}
+
+/* 生肖年份显示 */
+.zodiac-year {
+    font-size: 1.5rem;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    margin-bottom: 1rem;
+    animation: zodiacYearGlow 3s ease-in-out infinite;
+}
+
+@keyframes zodiacYearGlow {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* 互动按钮样式 */
+.interactive-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.interactive-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ffd700);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.interactive-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.interactive-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.interactive-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.interactive-btn:hover::before {
+    left: 100%;
+}
+
+/* 点击特效 */
+.click-firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+    animation: clickFirework 1s ease-out forwards;
+}
+
+@keyframes clickFirework {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(3);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(5);
+        opacity: 0;
+    }
+}
+
+/* 红包雨容器 */
+#redEnvelopeContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* 雪花容器 */
+#snowContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .time-section {
+        gap: 1rem;
+    }
+    
+    .time-card {
+        min-width: 80px;
+        padding: 1.5rem 1rem;
+    }
+    
+    .time-value {
+        font-size: 2rem;
+    }
+    
+    .music-controls {
+        top: 10px;
+        right: 10px;
+        flex-direction: column;
+    }
+    
+    .music-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .zodiac-wheel {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .zodiac-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        transform-origin: center 100px;
+    }
+    
+    .zodiac-icon:nth-child(1) { transform: rotate(0deg) translateY(-100px) rotate(0deg); }
+    .zodiac-icon:nth-child(2) { transform: rotate(30deg) translateY(-100px) rotate(-30deg); }
+    .zodiac-icon:nth-child(3) { transform: rotate(60deg) translateY(-100px) rotate(-60deg); }
+    .zodiac-icon:nth-child(4) { transform: rotate(90deg) translateY(-100px) rotate(-90deg); }
+    .zodiac-icon:nth-child(5) { transform: rotate(120deg) translateY(-100px) rotate(-120deg); }
+    .zodiac-icon:nth-child(6) { transform: rotate(150deg) translateY(-100px) rotate(-150deg); }
+    .zodiac-icon:nth-child(7) { transform: rotate(180deg) translateY(-100px) rotate(-180deg); }
+    .zodiac-icon:nth-child(8) { transform: rotate(210deg) translateY(-100px) rotate(-210deg); }
+    .zodiac-icon:nth-child(9) { transform: rotate(240deg) translateY(-100px) rotate(-240deg); }
+    .zodiac-icon:nth-child(10) { transform: rotate(270deg) translateY(-100px) rotate(-270deg); }
+    .zodiac-icon:nth-child(11) { transform: rotate(300deg) translateY(-100px) rotate(-300deg); }
+    .zodiac-icon:nth-child(12) { transform: rotate(330deg) translateY(-100px) rotate(-330deg); }
+    
+    .interactive-buttons {
+        gap: 0.5rem;
+    }
+    
+    .interactive-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}

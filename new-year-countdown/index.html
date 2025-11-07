@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新年倒计时</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 背景音乐将通过JavaScript动态创建 -->
+    
+    <!-- 音乐控制按钮 -->
+    <div class="music-controls">
+        <button id="musicToggle" class="music-btn">🎵 播放音乐</button>
+        <button id="musicMute" class="music-btn">🔇</button>
+    </div>
+    
+    
+    
+    <!-- 春节装饰元素 -->
+    <div class="fu-character fu-top-left">福</div>
+    <div class="fu-character fu-top-right">福</div>
+    <div class="fu-character fu-bottom-left">福</div>
+    <div class="fu-character fu-bottom-right">福</div>
+    
+    <!-- 春联装饰 -->
+    <div class="spring-couplet spring-left">
+        岁岁平安
+    </div>
+    <div class="spring-couplet spring-right">
+        年年有余
+    </div>
+    
+    <!-- 灯笼装饰 -->
+    <div class="lantern lantern-left"></div>
+    <div class="lantern lantern-right"></div>
+    
+    <!-- 生肖轮盘 -->
+    <div class="zodiac-wheel">
+        <div class="zodiac-icon" data-animal="鼠">🐭</div>
+        <div class="zodiac-icon" data-animal="牛">🐮</div>
+        <div class="zodiac-icon" data-animal="虎">🐯</div>
+        <div class="zodiac-icon" data-animal="兔">🐰</div>
+        <div class="zodiac-icon" data-animal="龙">🐲</div>
+        <div class="zodiac-icon" data-animal="蛇">🐍</div>
+        <div class="zodiac-icon" data-animal="马">🐴</div>
+        <div class="zodiac-icon" data-animal="羊">🐑</div>
+        <div class="zodiac-icon" data-animal="猴">🐵</div>
+        <div class="zodiac-icon" data-animal="鸡">🐔</div>
+        <div class="zodiac-icon" data-animal="狗">🐶</div>
+        <div class="zodiac-icon" data-animal="猪">🐷</div>
+    </div>
+    
+    <div class="countdown-container">
+        <h1 class="title">新年倒计时</h1>
+        
+        <!-- 生肖年份显示 -->
+        <div class="zodiac-year" id="zodiacYear"></div>
+        
+        <div class="countdown">
+            <div class="time-section">
+                <div class="time-card">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">小时</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">分钟</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">秒</div>
+                </div>
+            </div>
+        </div>
+        <div class="message" id="message">
+            距离新年还有
+        </div>
+        
+        <!-- 春节祝福语轮播 -->
+        <div class="blessings" id="blessings">
+            新年快乐，万事如意！
+        </div>
+        
+        <!-- 互动按钮 -->
+        <div class="interactive-buttons">
+            <button class="interactive-btn" id="fireworksBtn">🎆 放烟花</button>
+            <button class="interactive-btn" id="redEnvelopeBtn">🧧 发红包</button>
+            <button class="interactive-btn" id="snowBtn">❄️ 下雪了</button>
+        </div>
+        
+        <div class="fireworks">
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+        </div>
+    </div>
+    
+    <!-- 红包雨容器 -->
+    <div id="redEnvelopeContainer"></div>
+    
+    <!-- 雪花容器 -->
+    <div id="snowContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>

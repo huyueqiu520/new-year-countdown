@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新年倒计时</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="music-controls">
+        <button id="musicToggle" class="music-btn">🎵 播放音乐</button>
+        <button id="musicMute" class="music-btn">🔇</button>
+    </div>
+    
+    <div id="autoplayHint" class="autoplay-hint">
+        <div class="hint-content">
+            <p>🎵 点击页面任意位置开始播放背景音乐</p>
+            <small>（现代浏览器需要用户交互才能播放音频）</small>
+        </div>
+    </div>
+    
+    <!-- 节日装饰 -->
+    <div class="lantern lantern-left"></div>
+    <div class="lantern lantern-right"></div>
+    
+    <!-- 福字装饰 -->
+    <div class="fu-character fu-top-left">福</div>
+    <div class="fu-character fu-top-right">福</div>
+    <div class="fu-character fu-bottom-left">福</div>
+    <div class="fu-character fu-bottom-right">福</div>
+    
+    <!-- 春联 -->
+    <div class="spring-couplet spring-left">新春大吉</div>
+    <div class="spring-couplet spring-right">万事如意</div>
+    
+    <div class="countdown-container">
+        <h1 class="title">🎉 新年倒计时 🎉</h1>
+        <div class="countdown">
+            <div class="time-section">
+                <div class="time-card">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">小时</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">分钟</div>
+                </div>
+                <div class="time-card">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">秒</div>
+                </div>
+            </div>
+        </div>
+        <div class="message" id="message">
+            🎊 距离新年还有 🎊
+        </div>
+        <div class="blessings" id="blessings">
+            新年快乐，万事如意！
+        </div>
+        <div class="fireworks">
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+        </div>
+    </div>
+    
+    <script>
+        let backgroundMusic = null;
+        let isMusicPlaying = false;
+        let isMusicMuted = false;
+
+        function createAudioElement() {
+            const audio = new Audio();
+            const mp3Source = document.createElement('source');
+            mp3Source.src = '恭喜发财.mp3';
+            mp3Source.type = 'audio/mpeg';
+            audio.appendChild(mp3Source);
+            
+            const m4aSource = document.createElement('source');
+            m4aSource.src = '恭喜发财.m4a';
+            m4aSource.type = 'audio/mp4';
+            audio.appendChild(m4aSource);
+            
+            audio.loop = true;
+            audio.volume = 0.5;
+            return audio;
+        }
+
+        function toggleMusic() {
+            if (!backgroundMusic) {
+                backgroundMusic = createAudioElement();
+            }
+            
+            if (isMusicPlaying) {
+                backgroundMusic.pause();
+                document.getElementById('musicToggle').textContent = '🎵 播放音乐';
+                isMusicPlaying = false;
+            } else {
+                backgroundMusic.play().then(() => {
+                    document.getElementById('musicToggle').textContent = '⏸️ 暂停音乐';
+                    isMusicPlaying = true;
+                    document.getElementById('autoplayHint').style.display = 'none';
+                }).catch(error => {
+                    console.error('播放音乐失败:', error);
+                    alert('音乐播放失败，请检查音频文件或尝试点击页面其他位置');
+                });
+            }
+        }
+
+        function toggleMute() {
+            if (!backgroundMusic) return;
+            
+            if (isMusicMuted) {
+                backgroundMusic.volume = 0.5;
+                document.getElementById('musicMute').textContent = '🔇';
+                isMusicMuted = false;
+            } else {
+                backgroundMusic.volume = 0;
+                document.getElementById('musicMute').textContent = '🔊';
+                isMusicMuted = true;
+            }
+        }
+
+        function autoPlayMusic() {
+            backgroundMusic = createAudioElement();
+            
+            // 尝试自动播放
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // 自动播放成功
+                    document.getElementById('musicToggle').textContent = '⏸️ 暂停音乐';
+                    isMusicPlaying = true;
+                    document.getElementById('autoplayHint').style.display = 'none';
+                }).catch(error => {
+                    // 自动播放失败，显示提示
+                    console.log('需要用户交互才能播放音乐');
+                    document.getElementById('autoplayHint').style.display = 'flex';
+                });
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const nextYear = currentYear + 1;
+            const newYear = new Date(nextYear, 0, 1, 0, 0, 0, 0);
+            
+            const diff = newYear - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            if (diff <= 0) {
+                document.getElementById('message').textContent = '🎉 新年快乐！🎉';
+                document.querySelector('.fireworks').classList.add('active');
+                
+                // 新年到来时自动播放音乐
+                if (!isMusicPlaying && backgroundMusic) {
+                    backgroundMusic.play().then(() => {
+                        document.getElementById('musicToggle').textContent = '⏸️ 暂停音乐';
+                        isMusicPlaying = true;
+                        document.getElementById('autoplayHint').style.display = 'none';
+                    });
+                }
+                
+                // 新年特效：增加更多烟花和红包
+                if (!document.querySelector('.new-year-celebration')) {
+                    const celebration = document.createElement('div');
+                    celebration.className = 'new-year-celebration';
+                    celebration.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        pointer-events: none;
+                        z-index: 9999;
+                    `;
+                    document.body.appendChild(celebration);
+                    
+                    // 创建更多烟花
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            createFirework(celebration);
+                        }, i * 200);
+                    }
+                    
+                    // 创建更多红包
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            createRedEnvelope();
+                        }, i * 150);
+                    }
+                }
+            }
+
+        // 创建烟花特效
+        function createFirework(container) {
+            const firework = document.createElement('div');
+            firework.style.cssText = `
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                background: radial-gradient(circle, #ffd700, #ff6b6b, #ff4081);
+                border-radius: 50%;
+                animation: fireworkExplosion 1.5s ease-out forwards;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+            `;
+            container.appendChild(firework);
+            
+            setTimeout(() => {
+                if (firework.parentNode) {
+                    firework.parentNode.removeChild(firework);
+                }
+            }, 1500);
+        }
+        
+        // 定义烟花爆炸动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fireworkExplosion {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+                }
+                50% {
+                    transform: scale(3);
+                    opacity: 0.7;
+                    box-shadow: 0 0 20px 10px rgba(255, 107, 107, 0.5);
+                }
+                100% {
+                    transform: scale(5);
+                    opacity: 0;
+                    box-shadow: 0 0 40px 20px rgba(255, 64, 129, 0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        }
+
+        // 播放点击音效
+        function playClickSound() {
+            const clickSound = new Audio();
+            clickSound.src = data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==;
+            clickSound.volume = 0.3;
+            clickSound.play().catch(() => {});
+        }
+
+        document.getElementById('musicToggle').addEventListener('click', function() {
+            playClickSound();
+            toggleMusic();
+        });
+        
+        document.getElementById('musicMute').addEventListener('click', function() {
+            playClickSound();
+            toggleMute();
+        });
+        
+        // 点击页面任意位置尝试播放音乐
+        document.addEventListener('click', function(event) {
+            // 如果不是按钮点击，播放音效
+            if (!event.target.closest('.music-btn')) {
+                playClickSound();
+            }
+            document.getElementById('autoplayHint').style.display = 'none';
+            if (!isMusicPlaying && backgroundMusic) {
+                toggleMusic();
+            }
+        });
+
+        // 页面加载时自动尝试播放音乐
+        window.addEventListener('load', autoPlayMusic);
+
+        // 生成雪花
+        function createSnowflakes() {
+            const snowflakes = ['❄️', '❅', '❆', '✦', '❉'];
+            const container = document.body;
+            
+            for (let i = 0; i < 30; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                
+                // 随机位置和动画
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                
+                container.appendChild(snowflake);
+            }
+        }
+
+        // 生成红包雨
+        function createRedEnvelopes() {
+            const container = document.body;
+            const redEnvelopes = ['🧧', '💰', '🎁', '✨'];
+            
+            for (let i = 0; i < 15; i++) {
+                const envelope = document.createElement('div');
+                envelope.className = 'red-envelope';
+                envelope.textContent = redEnvelopes[Math.floor(Math.random() * redEnvelopes.length)];
+                
+                // 随机位置和动画
+                envelope.style.left = Math.random() * 100 + '%';
+                envelope.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                envelope.style.animationDelay = Math.random() * 8 + 's';
+                envelope.style.fontSize = (Math.random() * 8 + 20) + 'px';
+                
+                container.appendChild(envelope);
+            }
+        }
+
+        // 祝福语轮播
+        const blessings = [
+            "🎉 新年快乐，万事如意！🎉",
+            "🧧 恭喜发财，红包拿来！🧧", 
+            "❤️ 身体健康，阖家幸福！❤️",
+            "💰 事业顺利，财源广进！💰",
+            "✨ 心想事成，好运连连！✨",
+            "😊 福气满满，笑口常开！😊",
+            "🎊 年年有余，岁岁平安！🎊",
+            "🌟 大吉大利，富贵吉祥！🌟",
+            "🎇 阖家欢乐，幸福安康！🎇",
+            "🏮 吉祥如意，好运常伴！🏮"
+        ];
+        
+        let blessingIndex = 0;
+        function rotateBlessings() {
+            const blessingElement = document.getElementById('blessings');
+            blessingElement.textContent = blessings[blessingIndex];
+            blessingIndex = (blessingIndex + 1) % blessings.length;
+        }
+        
+        // 页面加载后生成雪花、红包雨和祝福语
+        window.addEventListener('load', function() {
+            createSnowflakes();
+            createRedEnvelopes();
+            rotateBlessings();
+            setInterval(rotateBlessings, 3000);
+        });
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
